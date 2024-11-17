@@ -49,7 +49,7 @@
     <Compile Include="Data\DataEquipement.cs" />
     <Compile Include="Data\DataEtages.cs" />
     <Compile Include="Data\DataItems.cs" />
-    <Compile Include="Data\DataLieuxChildren.cs" />
+    <Compile Include="Data\DataLieux2.cs" />
     <Compile Include="Data\DataLieux.cs" />
     <Compile Include="Data\DataMonsters.cs" />
     <Compile Include="Data\DataRaces.cs" />

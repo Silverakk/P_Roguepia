@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Resources;
+using P_Roguepia;
 
 namespace P_RogueTower
 {
@@ -35,6 +36,7 @@ namespace P_RogueTower
         {
             return new Arme(2, 4, 2, "Zweihander", 10, "Longue épée à deux mains\nInflige 4 dégâts\nMalus d'habilite de 2 en combat");
         }
+        
         public static Arme BrasDroit()
         {
             return new Arme(1, 0, 0, "Bras droit", 0,"votre bras droit");
@@ -42,6 +44,10 @@ namespace P_RogueTower
         public static Arme Poignard()
         {
             return new Poignard();
+        }
+        public static Arme Grimoire()
+        {
+            return new Grimoire();
         }
 
         public static Arme NeoSword = new Arme(2, 3, 0, "Néo-Katana", 30, "Une arme légendaire ");
@@ -80,12 +86,14 @@ namespace P_RogueTower
         }
         
         
-        public override void Block(Game game)
+        public override string Block(Game game)
         {
             if(Dice.Lancer() % 6 == 0)
             {
                 game.Player.Endurance++;
+                return "1 dégât bloqué";
             }
+            return null;
         }
 
     }
@@ -98,20 +106,23 @@ namespace P_RogueTower
         }
 
 
-        public override void Block(Game game)
+        public override string Block(Game game)
         {
             if (Dice.Lancer() % 6 == 0)
             {
                 if(game.GetMonster().Puissance > 1)
                 {
                     game.Player.Endurance += 2;
+                    return "2 dégâts bloqué";
                 }
                 else if(game.GetMonster().Puissance == 1)
                 {
                     game.Player.Endurance += 1;
+                    return "1 dégât bloqué";
                 }
-                
+                return null;
             }
+            return null;
         }
     }
 
@@ -149,10 +160,24 @@ namespace P_RogueTower
         {
 
         }
-        public override void LuckBasedMove(Game game)
+        public override string LuckBasedMove(Game game)
         {
-            game.GetMonster().Endurance =- 1;
+            game.GetMonster().Endurance = -1;
+            return "Test de chance réussi, La créature perd 2 points d'Endurance";
         }
     }
+
+    [Serializable]
+    internal class Grimoire : Arme
+    {
+        public Grimoire() : base(1, 1, -1, "Grimoire", 10, "Grismoire permettant\nInflige 1 dégat magique\nMalus d'habilite de 1 en combat",true)
+        {
+
+        }
+
+      
+    }
+
+
 
 }

@@ -13,9 +13,9 @@ namespace P_RogueTower.LivingCreatures
         {
 
         }
-        public virtual void Block(Game game)
+        public virtual string Block(Game game)
         {
-            
+            return null;
         }
 
     }

@@ -44,9 +44,9 @@ namespace P_RogueTower
             int currentRoomId, int nextRoomId, int secondNextRoomId,
             string name, string description = null,
             List<Monstre> monsterPool = null,
-            bool light = true, 
+            bool light = true,
             bool isActionable = false, 
-            bool isSkippable = true, 
+            bool isSkippable = true,
             bool isStairs = false)
         {
             Name = name;
@@ -73,8 +73,9 @@ namespace P_RogueTower
         {
             return MonsterPool.Count() == 0;
         }
-        
-        
+
+
+
 
 
         // Événements

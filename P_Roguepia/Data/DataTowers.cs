@@ -16,9 +16,9 @@ namespace P_RogueTower.Data
         }
         public static Tower TourTutorielle()
         {
-            return new Tower("Tour Tutorielle", DataEtages.Vide(), 0, "C'est un donjon didacticielle dans le but de vous apprendre les bases du jeu, n'appuyez pas sur les boutons trop vite", Resources.defaultscreen);
+            return new Tower("Château Tutoriel", DataEtages.ChateauTutoriel(), 0, "C'est un donjon didacticielle dans le but de vous apprendre les bases du jeu, n'appuyez pas sur les boutons trop vite et vous apprendrez surement quelque chose", Resources.defaultscreen);
         }
-        public static Tower Vide = new Tower("Vide", DataEtages.TestDunjon());
+        public static Tower Vide = new Tower("Vide", DataEtages.TestDunjon(), 0);
         public static List<Tower> GetAllDunjons()
         {
             return new List<Tower> { TourTutorielle() };

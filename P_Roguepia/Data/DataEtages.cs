@@ -12,12 +12,16 @@ namespace P_RogueTower.Data
 
         public static Etage EtageTest()
         {
-            DataLieuxChildren dataLieuxChildren = new DataLieuxChildren();
-            return new Etage("simple étage", "l'étage d'un donjon tout ce qu'il y a de plus administratif", dataLieuxChildren.SimpleEtage());
+            //DataLieuxChildren dataLieuxChildren = new DataLieuxChildren();
+            return new Etage("simple étage", "l'étage d'un donjon tout ce qu'il y a de plus administratif", DataLieux.SimpleEtage());
         }
         public static Etage EtageVide()
         {
             return new Etage(" ", " ", DataLieux.SommetDuDonjonTest());
+        }
+        public static Etage PremierEtageChateauTuto()
+        {
+            return new Etage(" ", " ", DataLieux.PremierEtageDeLaTourTutorial());
         }
 
         public static List<Etage> TestDunjon() 
@@ -29,11 +33,11 @@ namespace P_RogueTower.Data
                 EtageVide()
             };
         }
-        public static List<Etage> Vide()
+        public static List<Etage> ChateauTutoriel()
         {
             return new List<Etage>
             {
-                EtageVide()
+                PremierEtageChateauTuto()
             };
         }
 

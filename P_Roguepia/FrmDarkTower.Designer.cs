@@ -31,10 +31,12 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.newGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nouvellePartieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newGamePlusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.backgroundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.currentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTarot = new System.Windows.Forms.ToolStripMenuItem();
+            this.sauvegarderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fermerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gbxLeftInfo = new System.Windows.Forms.GroupBox();
             this.lbltbxItems = new System.Windows.Forms.Label();
@@ -89,8 +91,6 @@
             this.lblPuissance = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.lbxItems = new System.Windows.Forms.ListBox();
-            this.newGamePlusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sauvegarderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.gbxLeftInfo.SuspendLayout();
             this.gbxTowerInfo.SuspendLayout();
@@ -139,6 +139,13 @@
             this.nouvellePartieToolStripMenuItem.Text = "Nouvelle Partie";
             this.nouvellePartieToolStripMenuItem.Click += new System.EventHandler(this.tsmiNewGame_Click);
             // 
+            // newGamePlusToolStripMenuItem
+            // 
+            this.newGamePlusToolStripMenuItem.Name = "newGamePlusToolStripMenuItem";
+            this.newGamePlusToolStripMenuItem.Size = new System.Drawing.Size(293, 40);
+            this.newGamePlusToolStripMenuItem.Text = "New Game Plus";
+            this.newGamePlusToolStripMenuItem.Click += new System.EventHandler(this.newGamePlusToolStripMenuItem_Click);
+            // 
             // backgroundToolStripMenuItem
             // 
             this.backgroundToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -168,6 +175,13 @@
             this.tsmiTarot.Size = new System.Drawing.Size(293, 40);
             this.tsmiTarot.Text = "Tarot Divinatoire";
             this.tsmiTarot.Click += new System.EventHandler(this.tsmiTarot_Click);
+            // 
+            // sauvegarderToolStripMenuItem
+            // 
+            this.sauvegarderToolStripMenuItem.Name = "sauvegarderToolStripMenuItem";
+            this.sauvegarderToolStripMenuItem.Size = new System.Drawing.Size(293, 40);
+            this.sauvegarderToolStripMenuItem.Text = "Sauvegarder";
+            this.sauvegarderToolStripMenuItem.Click += new System.EventHandler(this.sauvegarderToolStripMenuItem_Click);
             // 
             // fermerToolStripMenuItem
             // 
@@ -358,6 +372,7 @@
             // lblCombatLogs
             // 
             this.lblCombatLogs.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCombatLogs.Font = new System.Drawing.Font("Lucida Sans Unicode", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCombatLogs.Location = new System.Drawing.Point(375, 107);
             this.lblCombatLogs.Name = "lblCombatLogs";
             this.lblCombatLogs.Size = new System.Drawing.Size(203, 217);
@@ -879,20 +894,6 @@
             this.lbxItems.TabIndex = 4;
             this.lbxItems.Click += new System.EventHandler(this.lbxItems_Click);
             this.lbxItems.DoubleClick += new System.EventHandler(this.lbxItems_DoubleClick);
-            // 
-            // newGamePlusToolStripMenuItem
-            // 
-            this.newGamePlusToolStripMenuItem.Name = "newGamePlusToolStripMenuItem";
-            this.newGamePlusToolStripMenuItem.Size = new System.Drawing.Size(293, 40);
-            this.newGamePlusToolStripMenuItem.Text = "New Game Plus";
-            this.newGamePlusToolStripMenuItem.Click += new System.EventHandler(this.newGamePlusToolStripMenuItem_Click);
-            // 
-            // sauvegarderToolStripMenuItem
-            // 
-            this.sauvegarderToolStripMenuItem.Name = "sauvegarderToolStripMenuItem";
-            this.sauvegarderToolStripMenuItem.Size = new System.Drawing.Size(293, 40);
-            this.sauvegarderToolStripMenuItem.Text = "Sauvegarder";
-            this.sauvegarderToolStripMenuItem.Click += new System.EventHandler(this.sauvegarderToolStripMenuItem_Click);
             // 
             // FrmDarkTower
             // 

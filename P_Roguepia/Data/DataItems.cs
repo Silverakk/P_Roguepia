@@ -54,6 +54,14 @@ namespace P_RogueTower.Data
         {
             return new GrisGris();
         }
+        public static Item CouteauDeLance()
+        {
+            return new CouteauDeLancer();
+        }
+        public static Item EauBenite()
+        {
+            return new EauBenite();
+        }
 
 
 
@@ -63,14 +71,18 @@ namespace P_RogueTower.Data
         }
         public static List<Item> GetStartingItem()
         {
-            return new List<Item> { PotiondeFortune(), ElixirdeVitalite(), NectarDeRegeneration(), Opal(), GrisGris(), Bombe(), DataEquipement.Dagger(), DataEquipement.Bouclier() };
+            return new List<Item> { PotiondeFortune(), ElixirdeVitalite(), NectarDeRegeneration(), Opal(), GrisGris(), Bombe(), CouteauDeLance(),DataEquipement.Dagger(), DataEquipement.Bouclier(), DataEquipement.Grimoire() };
         }
-        
+        public static List<Item> GetShopItem()
+        {
+            return new List<Item> { PotiondeFortune(), ElixirdeVitalite(), NectarDeRegeneration(), Opal(), GrisGris(), Bombe(), EauBenite() ,CouteauDeLance(), DataEquipement.Dagger(), DataEquipement.Bouclier(), DataEquipement.Grimoire() };
+        }
+
     }
     [Serializable]
     internal class PoudreMagique : Consummable
     {
-        public PoudreMagique() : base("Poudre Magique", 10,"Donne au personnage un lien magique pendant deux pièces",1,true,2)
+        public PoudreMagique() : base("Poudre Magique", 10,"Donne au personnage un lien magique pendant 3 pièces",1,true,3)
         {
 
         }
@@ -208,15 +220,15 @@ namespace P_RogueTower.Data
     [Serializable]
     internal class CouteauDeLancer : Consummable
     {
-        public CouteauDeLancer() : base("Couteau de lancer", 3, $"Inflige 1 dégât à une créature",1)
+        public CouteauDeLancer() : base("Couteau de lancer", 3, $"Inflige 1 dégât, 2 utilisations",2)
         {
-
+            
         }
         public override void Consume(Game game)
         {
-            Lieu room = game.GetRoom();
+            this.Description = $"Inflige 1 dégât, 1 utilisation";
 
-            if (room.MonsterPool != null)
+            if (game.GetRoom().MonsterPool != null)
             {
                 game.GetMonster().Endurance -= 1;
             }

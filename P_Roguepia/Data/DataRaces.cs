@@ -29,7 +29,7 @@ namespace P_RogueTower
         }
         public static Player Saurien()
         {
-            return new Player("Saurien", 9, 10, 8, new Inventory() { DataEquipement.MueSolidifee() }, false, 10, "Homme lézard des berges européennes\ncommence avec 10 points d'Endurance, 9 points de chance et 8 points d'habilité et son anicenne mue solifiée");
+            return new Player("Saurien", 9, 10, 8, new Inventory() { }, false, 10, "Homme lézard des berges européennes\ncommence avec 10 points d'Endurance, 9 points de chance et 8 points d'habilité et son anicenne mue solifiée");
         }
         public static Player Orc()
         {

@@ -24,7 +24,7 @@ namespace P_RogueTower
         private int _numberOfEnnemySlain;
         private Inventory _inventoryBin;
         private bool _gameWon;
-        private string actionDescription;
+        private string _actionDescription;
         private List<string> combatLogs;
         private List<string> donjonsDone;
 
@@ -40,7 +40,7 @@ namespace P_RogueTower
         internal Inventory InventoryBin { get => _inventoryBin; set => _inventoryBin = value; }
         public int NumberOfEnnemySlain { get => _numberOfEnnemySlain; set => _numberOfEnnemySlain = value; }
         public bool GameWon { get => _gameWon; set => _gameWon = value; }
-        public string ActionDescription { get => actionDescription; set => actionDescription = value; }
+        public string ActionDescription { get => _actionDescription; set => _actionDescription = value; }
         public List<string> CombatLogs { get => combatLogs; set => combatLogs = value; }
         public List<string> DonjonsDone { get => donjonsDone; set => donjonsDone = value; }
 
@@ -66,6 +66,10 @@ namespace P_RogueTower
             CombatLogs = new List<string>();
             DonjonsDone = new List<string>();
             //Lieu = lieu;
+            if(Player.NameRace == "Saurien")
+            {
+                Player.MainGauche = (DataEquipement.MueSolidifee() as ArmureBrasGauche);
+            }
             if (Player.MainDroite.NombreDeMain == 2 && Player.NameRace == "Fée")
             {
                 Player.Inventaire.Add(Player.MainDroite as Item);
@@ -79,6 +83,7 @@ namespace P_RogueTower
         {
             int diceResult = Dice.LancerPlusieurs();
             bool diceSuccess = diceResult <= Player.Chance;
+            CombatLogs.Add($"Vous jetez {diceResult.ToString()}");
             if (diceSuccess) { Player.Chance--; }
             return diceSuccess;
         }
@@ -89,15 +94,12 @@ namespace P_RogueTower
             if (TestdeChance())
             {
                 Player.Endurance++;
+                CombatLogs.Add("Le test de chance est une réussite, vous regagnez 1 point d'Endurance.");
             }
             else
             {
                 Player.Endurance--;
-            }
-            if (monstre.Endurance <= 0)
-            {
-
-                GetRoom().RemoveMonster();
+                CombatLogs.Add("Le test de chance est une échec, vous perdez 1 point d'Endurance.");
             }
             CanChanceDefense = false;
         }
@@ -107,20 +109,27 @@ namespace P_RogueTower
             Monstre monstre = GetMonster();
             if (TestdeChance())
             {
+                string LuckDamagePlusAttempt = "Le test de chance est une réussite, la créature perd 1 point d'Endurance supplémentaire.";
+                string LuckBasedMoveAttempt = Player.MainDroite.LuckBasedMove(this);
                 monstre.Endurance--;
+                if (LuckBasedMoveAttempt != null)
+                {
+                    LuckDamagePlusAttempt = LuckBasedMoveAttempt;
+                }
+                CombatLogs.Add(LuckDamagePlusAttempt);
             }
             else
             {
+                string LuckDamagePlusAttempt = "Le test de chance est un échec, la créature regagne 1 point d'Endurance supplémentaire.";
                 monstre.Endurance++;
-                Player.MainDroite.LuckBasedMove(this);
-            }
-            if (monstre.Endurance <= 0)
-            {
+                if (monstre.Endurance <= 0)
+                {
 
-                GetRoom().RemoveMonster();
+                    MonsterDeath(monstre);
+                }
+                CanChanceAttack = false;
+                CombatLogs.Add($"{LuckDamagePlusAttempt}");
             }
-            CanChanceAttack = false;
-            
         }
         //_______________________________________________________________________________________________
         public void CombatRound1v1()
@@ -135,16 +144,17 @@ namespace P_RogueTower
             }
             CanChanceAttack = false;
             CanChanceDefense = false;
+            CombatLogs.Add($"Tour {NumberOfCombatRounds}");
             CombatLogs.Add($"{Player.Name} jet {playerDiceThrow} ");
             CombatLogs.Add($"{GetMonster().Name} jet {monsterDiceThrow}");
             // Player attacks
             if (playerDiceThrow > monsterDiceThrow)
             {
-                if(Player.MainDroite != null)
+                if (Player.MainDroite != null)
                 {
-                    if (!monstre.IsMagic)
+                    if (!monstre.IsMagic || monstre.IsMagic && (Player.IsMagic || Player.MainDroite.IsMagic))
                     {
-                        CombatLogs.Add($"\n{Player.Name} inflige {Player.MainDroite.Puissance} !");
+                        CombatLogs.Add($"{Player.Name} inflige {Player.MainDroite.Puissance} !\n");
                         monstre.Endurance -= Player.MainDroite.Puissance;
                         Player.MainDroite.WeaponMove(this);
                         if (monstre.Endurance >= 0)
@@ -152,34 +162,23 @@ namespace P_RogueTower
                             CanChanceAttack = true;
                         };
                     }
-                    else if (monstre.IsMagic && (Player.IsMagic || Player.MainDroite.IsMagic))
-                    {
-                        CombatLogs.Add($"\n{Player.Name} inflige {Player.MainDroite.Puissance} !");
-                        monstre.Endurance -= Player.MainDroite.Puissance;
-                        Player.MainDroite.WeaponMove(this);
-                        if (monstre.Endurance >= 0)
-                        {
-                            CanChanceAttack = true;
-                        }
-                    }
                     else
                     {
-                        CombatLogs.Add("la créeature ne semble prendre aucun dégât.");
+                        CombatLogs.Add($"{GetMonster().Name} ne prend aucun dégât.\n");
                     }
-
-
-
                 }
             }
             // Monster Attack
             else if (playerDiceThrow < monsterDiceThrow)
             {
-                CombatLogs.Add($" {GetMonster().Name} inflige {GetMonster().Puissance}");
+                CombatLogs.Add($"{GetMonster().Name} inflige {GetMonster().Puissance} !\n");
                 if (Player.MainGauche != null)
                 {
-
-                    Player.MainGauche.Block(this);
-
+                    string blockAttempt = Player.MainGauche.Block(this);
+                    if (blockAttempt != null)
+                    {
+                        CombatLogs.Add(blockAttempt);
+                    }
                 }
 
                 Player.Endurance -= monstre.Puissance;
@@ -187,32 +186,42 @@ namespace P_RogueTower
             }
             else
             {
-                CombatLogs.Add($"égalité");
+                CombatLogs.Add($"égalité\n");
             }
-            if(monstre.Endurance <= 0)
+            MonsterDeath(monstre);
+        }
+
+        private void MonsterDeath(Monstre monstre)
+        {
+            if (monstre.Endurance <= 0)
             {
-                CombatLogs.Add($" {GetMonster().Name} meurt");
-                NumberOfCombatRounds = 0;
+                CombatLogs.Add($"{GetMonster().Name} meurt.");
                 GetRoom().RemoveMonster();
-                NumberOfEnnemySlain++;
+                MonsterDropOnDeath(monstre);
                 CanChanceAttack = false;
                 CanChanceDefense = false;
-                MonsterDropOnDeath(monstre);
+                if (GetRoom().AreMonstersDead() == true)
+                {
+                    NumberOfCombatRounds = 0;
+                }
             }
         }
-        
+
         private void MonsterDropOnDeath(Monstre monstre)
         {
+            NumberOfEnnemySlain++;
             Player.Lyre += monstre.MoneyDrop;
-            CombatLogs.Add($"Vous recevez {monstre.MoneyDrop} lyres");
+            
+            
             if (monstre.Inventaire != null)
             {
                 foreach (Item i in monstre.Inventaire)
                 {
-                    CombatLogs.Add($"la créature avait {i}");
+                    CombatLogs.Add($"la créature avait {i.Name}-");
                     Player.Inventaire.Add(i);
                 }
             }
+            CombatLogs.Add($"Vous recevez {monstre.MoneyDrop} lyres.\n");
         }
 
         //_______________________________________________________________________________________________
@@ -229,6 +238,7 @@ namespace P_RogueTower
                 Player.Endurance -= GetMonster().Puissance;
 
             }
+            Avancer();
             
         }
         //_______________________________________________________________________________________________
@@ -353,6 +363,11 @@ namespace P_RogueTower
                         this.InventoryBin.Add(item);
                     }
                     Player.Inventaire.Remove(item);
+                }
+                if (GetMonster().Endurance <= 0)
+                {
+
+                    MonsterDeath(GetMonster());
                 }
             }
 
@@ -479,6 +494,7 @@ namespace P_RogueTower
                 ActionDescription = (currentRoom as Actionable).ActionAndDescription(this);
             }
         }
+
         //_______________________________________________________________________________________________
         public void RemoveShieldOnClick()
         {
@@ -515,13 +531,18 @@ namespace P_RogueTower
 
         public bool CanActionBtnCheck()
         {
+            if(GetRoom() is Actionable)
+            {
+                (GetRoom() as Actionable).BecomeActionableWhenAllCreaturesAreDead(this);
+            }
             bool btnCheck = IsPlayerAlive() && !GameWon;
             return GetRoom().IsActionable && btnCheck;
         }
         public bool CanChanceBtnCheck()
         {
+            
             bool btnCheck = IsPlayerAlive() && !GameWon;            
-            return CanChanceDefense || CanChanceAttack && btnCheck;
+            return (CanChanceDefense || CanChanceAttack ) && btnCheck;
         }
 
 

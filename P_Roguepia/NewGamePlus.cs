@@ -28,7 +28,14 @@ namespace P_Roguepia
 
         private void NewGamePlus_Load(object sender, EventArgs e)
         {
-            lblArme.Text = Game.Player.MainDroite.Name;
+            if (Game.Player.MainDroite != null)
+            {
+                lblArme.Text = Game.Player.MainDroite.Name;
+            }
+            else
+            {
+                lblArme.Text = "vide";
+            }
             lblChance.Text = Game.Player.Chance.ToString();
             lblEndurance.Text = Game.Player.Endurance.ToString();
             lblHabilite.Text = Game.Player.Habilite.ToString();
@@ -38,7 +45,7 @@ namespace P_Roguepia
             lblNumberOfEnnemySlain.Text = Game.NumberOfEnnemySlain.ToString();
             UpdateInventoryBox();
             lbxShop.DisplayMember = "Name";
-            foreach (Item item in DataItems.GetStartingItem())
+            foreach (Item item in DataItems.GetShopItem())
             {
                 lbxShop.Items.Add(item);
             }

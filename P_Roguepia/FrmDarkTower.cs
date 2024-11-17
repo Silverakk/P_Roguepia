@@ -102,28 +102,20 @@ namespace P_Roguepia
             lblNombreEtage.Text = string.Empty;
             lblNomDuJoueur.Text = string.Empty;
             lblRaceDuJoueur.Text = string.Empty;
-
             // gbx Down Left
             lblBrasGauche.Text = string.Empty;
             lblLyre.Text = string.Empty;
-
-
             // gbx Arme
             lblArme.Text = string.Empty;
             lblPuissance.Text = string.Empty;
             lblMalusHabiliteNumber.Text = string.Empty;
             lblMalusHabiliteNumber.Text = string.Empty;
             lblNumberOfEnnemySlain.Text = string.Empty;
-
             // gbx Carac
             lblEndurance.Text = string.Empty;
             lblChance.Text = string.Empty;
             lblHabilite.Text = string.Empty;
-
-
             lblTowerInfo.Text = string.Empty;
-            
-
             string infoRoomLight = string.Empty;
             string infoPlayerLight = string.Empty;
             string infoLockedRoom = string.Empty;
@@ -157,7 +149,7 @@ namespace P_Roguepia
             }
             if (CurrentGame.GetRoom().Light)
             {
-                infoRoomLight = "\nLa pièce est illuminée.";
+                infoRoomLight = "\nL'endroit est illuminée.";
             }
             else if (!CurrentGame.GetRoom().Light && !CurrentGame.Player.IsLighted)
             {
@@ -165,23 +157,22 @@ namespace P_Roguepia
             }
             else
             {
-                infoRoomLight = "\nLa pièce est dans l'obscurité";
+                infoRoomLight = "\nL'obscurité vous entour. ";
             }
 
             if (!CurrentGame.GetRoom().AreMonstersDead())
             {
                 if (CurrentGame.GetMonster().IsMagic)
                 {
-                    isCreatureMagic = "La créature vous combattant à l'air d'être magique.";
+                    isCreatureMagic = "La créature vous combattant à l'air d'être magique. ";
                 }
                 if (CurrentGame.GetRoom().MonsterPool.Count > 1)
                 {
-                    AreThereCreatureInTheRoom = "Il y a plusieurs créatures devant vous.";
+                    AreThereCreatureInTheRoom = "Il y a d'autres créatures derrière. ";
                 }
-                else
-                {
-                    AreThereCreatureInTheRoom = "Il y a un monstre devant vous.";
-                }
+                
+                AreThereCreatureInTheRoom = $"{CurrentGame.GetMonster().Name} se trouve devant vous devant vous. " + AreThereCreatureInTheRoom;
+                
 
             }
             
@@ -224,15 +215,16 @@ namespace P_Roguepia
             }
 
             // gestion du label combat logs
-            
-            int count = 15;
-            if(CurrentGame.CombatLogs.Count() < 15)
+            const int countMax = 9;
+            int count = countMax;
+            if(CurrentGame.CombatLogs.Count() < countMax)
             {
                 count = CurrentGame.CombatLogs.Count();
             }
-            int bufferZoneIraq = Math.Max(CurrentGame.CombatLogs.Count() - 15, 0);
+            int bufferZoneIraq = Math.Max(CurrentGame.CombatLogs.Count() - countMax, 0);
             
             lblCombatLogs.Text = string.Join("\n\r", CurrentGame.CombatLogs.GetRange(bufferZoneIraq, count));
+
             
 
             // gestion des labels des armes 
@@ -272,8 +264,6 @@ namespace P_Roguepia
                     lblMalusHabiliteTitle.Text = "Malus d'Habilité";
                 }
             }
-
-
 
             if (CurrentGame.Player.MainGauche != null)
             {
@@ -321,7 +311,7 @@ namespace P_Roguepia
                 pbxMonstre.Image = null;
             }
             // Death Screen
-            if (!CurrentGame.IsPlayerAlive())
+            if (!CurrentGame.IsPlayerAlive() && !CurrentGame.CanChanceDefense)
             {
                 Death deathscreen = new Death();
                 deathscreen.ShowDialog();
@@ -441,8 +431,6 @@ namespace P_Roguepia
             {
                 lbltbxItems.Text = (lbxItems.SelectedItem as Item).Description;
             }
-
-            
         }
 
         private void lblNombreEnnemiTué_Click(object sender, EventArgs e)
@@ -451,8 +439,7 @@ namespace P_Roguepia
             {
                 CurrentGame.RemoveShieldOnClick();
             }
-            UpdateForm();
-            
+            UpdateForm(); 
         }
 
         private void lblArme_Click(object sender, EventArgs e)

@@ -29,13 +29,13 @@ namespace P_RogueTower.LivingCreatures
             NombreDeMain = nombreDeMain;
             IsMagic = isMagic;
         }
-        public virtual void WeaponMove(Game game)
+        public virtual string WeaponMove(Game game)
         {
-            
+            return null;
         }
-        public virtual void LuckBasedMove(Game game)
+        public virtual string LuckBasedMove(Game game)
         {
-
+            return null;
         }
 
     }

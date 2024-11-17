@@ -9,18 +9,21 @@ namespace P_RogueTower
     [Serializable]
     abstract class Actionable : Lieu
     {
-        public Actionable(int currentRoomId, int nextRoomId, int secondNextRoomId, int numberOfActions,
+        public Actionable(
+            int currentRoomId, int nextRoomId, int secondNextRoomId, 
             string name, string description = null,
             List<Monstre> monsterPool = null,
-            bool light = true, bool isActionable = false, bool isSkippable = true, bool isStairs = false) 
+            bool light = true, bool isActionable = false, 
+            bool isSkippable = true, 
+            bool isStairs = false) 
 
-            : base(currentRoomId, nextRoomId, secondNextRoomId, 
+            : base(currentRoomId, nextRoomId, secondNextRoomId,
                   name, description, monsterPool, 
                   light, isActionable, isSkippable, isStairs)
         {
             
         }
-        public virtual void Action1(Game game)
+        public virtual void BecomeActionableWhenAllCreaturesAreDead(Game game)
         {
             
         }
